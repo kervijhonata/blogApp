@@ -21,7 +21,7 @@ router.get('/categorias', (req, res, next) => {
     // Método lean() converte Mongoose Document em Dados JSON
 
     Categoria.find().sort({date: 'desc'}).lean().then((categorias) => {
-        console.log(categorias)
+        // console.log(categorias)
         res.render('admin/categorias', {categorias: categorias})
     }).catch(err => {
         req.flash("error_msg", "Houve um erro ao listar as categorias")
@@ -33,9 +33,75 @@ router.get('/categorias/add', (req, res) => {
     res.render('admin/addcategorias')
 })
 
+router.get('/categorias/edit/:id', (req, res) => {
+    Categoria.findOne({_id: req.params.id}).lean().then((categoria)=>{
+        res.render('admin/editcategorias', {categoria: categoria})
+    }).catch(err => {
+        req.flash("error_msg", "Categoria selecionada não existe")
+        res.redirect('/admin/categorias')
+    })
+})
+
+router.post('/categorias/edit', (req, res) => {
+    
+    let erros = [];
+
+    if(!req.body.nome || typeof req.body.nome == undefined || req.body.nome == null){
+        erros.push({
+            texto: "ERRO: Nome Inválido"
+        })
+    }
+
+    if(req.body.nome.length < 2){
+        erros.push({
+            texto: "ERRO: Nome da categoria muito pequeno"
+        })
+    }
+
+    if(!req.body.slug || typeof req.body.slug == undefined || req.body.slug == null){
+        erros.push({
+            texto: "ERRO: Slug Inválido"
+        })
+    }
+
+    if(req.body.slug.length < 2){
+        erros.push({
+            texto: "ERRO: Slug para categoria muito pequeno"
+        })
+    }
+
+    if(erros.length > 0){
+        Categoria.find().lean().then( (categorias) => {
+            res.render('admin/categorias', {
+                categorias: categorias,
+                erros: erros
+            })
+        }).catch( err => {
+            req.flash("error_msg", "Erro interno, por favor, atualize a página")
+            res.redirect("/admin/categorias")
+        })
+
+    }else{
+        Categoria.findOne({_id: req.body.id}).then( (categoria) => {
+
+            categoria.nome = req.body.nome
+            categoria.slug = req.body.slug
+
+            categoria.save()
+            .then(() => {
+                req.flash('success_msg', 'Categoria editada com Sucesso!') //Mensagem de Sucesso
+                res.redirect('/admin/categorias') //Redireciona o usuário se o cadastro for efetuado
+            }).catch((err) => {
+                req.flash('error_msg', 'Houve um erro interno ao editar categoria.') //Mensagem de Erro
+                res.redirect("/admin/categorias")
+            })
+        })
+    }
+})
+
 router.post('/categorias/nova', (req, res) => {
 
-    var erros = [];
+    let erros = [];
 
     if(!req.body.nome || typeof req.body.nome == undefined || req.body.nome == null){
         erros.push({
@@ -81,9 +147,19 @@ router.post('/categorias/nova', (req, res) => {
             res.redirect('/admin/categorias') //Redireciona o usuário se o cadastro for efetuado
         }).catch((err) => {
             req.flash('error_msg', 'Erro ao registrar categoria, tente novamente!') //Mensagem de Erro
-            res.redirect('/admin')
+            res.redirect('/admin/categorias')
         })  
     }
+})
+
+router.post('/categorias/deletar', (req, res) => {
+    Categoria.deleteOne({_id: req.body.id}).then(()=>{
+        req.flash("success_msg", "Categoria deletada com Sucesso")
+        res.redirect("/admin/categorias")
+    }).catch(err => {
+        req.flash("error_msg", "Houve um erro ao deletar categoria")
+        res.redirect("/admin/categorias")
+    })
 })
 
 // Export
