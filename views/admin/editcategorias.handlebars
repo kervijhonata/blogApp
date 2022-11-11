@@ -1,8 +1,4 @@
-{{#each error_msg}}
-    <div class="alert alert-danger">{{texto}}</div>
-{{else}}
-
-{{/each}}
+{{>_erros}}
 <h3>Editar Categoria</h3>
 <hr>
 
@@ -11,10 +7,10 @@
         <form method="post" action="/admin/categorias/edit">
             <input type="hidden" name="id" value="{{categoria._id}}">
             <label for="nome">Nome</label>
-            <input type="text" name="nome" id="nome" placeholder="Nome da categoria" class="form-control" value="{{categoria.nome}}">
+            <input type="text" name="nome" id="nome" placeholder="Nome da categoria" class="form-control" value="{{categoria.nome}}" min="2" max="60">
 
             <label for="slug">Slug:</label>
-            <input type="text" name="slug" id="slug" placeholder="Slug da categoria" class="form-control" value="{{categoria.slug}}">
+            <input type="text" name="slug" id="slug" placeholder="Slug da categoria" class="form-control" value="{{categoria.slug}}" min="2" max="60">
             <br>
             <button type="submit" class="btn btn-success">Salvar Categoria</button>
         </form>

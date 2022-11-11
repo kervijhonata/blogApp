@@ -1,0 +1,33 @@
+{{>_erros}}
+<h2>Editar postagem</h2>
+<hr>
+<div class="card">
+    <div class="card-body">
+        <form action="/admin/postagens/edit" method="post" class="form" autocomplete="off">
+            <input type="hidden" name="id" value="{{postagem._id}}">
+
+            <label for="titulo">Título</label>
+            <input type="text" name="titulo" class="form-control" value="{{postagem.titulo}}" minlength="2" maxlength="60" required="true" aria-required="true">
+            
+            <label for="slug">Slug</label>
+            <input type="text" name="slug" class="form-control" value="{{postagem.slug}}" minlength="2" maxlength="60" required="true" aria-required="true">
+            
+            <label for="descricao">Descrição</label>
+            <input type="text" name="descricao" class="form-control" value="{{postagem.descricao}}" minlength="2" maxlength="120" required="true" aria-required="true">
+            
+            <label for="conteudo">Conteúdo</label>
+            <textarea type="text" name="conteudo" class="form-control" minlength="0" maxlength="280" required="true" aria-required="true">{{postagem.conteudo}}</textarea>
+            
+            <label for="categoria">Categoria da postagem</label>
+            <select name="categoria" class="form-select" required="true">
+                {{#each categorias}}
+                    <option value="{{_id}}">{{nome}}</option>
+                {{else}}
+                    <option value="0" disabled="true" aria-label="Disabled" selected="true">Nenhuma categoria registrada</option>
+                {{/each}}
+            </select>
+            <hr>
+            <button class="btn btn-success">Editar postagem</button>
+        </form>
+    </div>
+</div>
