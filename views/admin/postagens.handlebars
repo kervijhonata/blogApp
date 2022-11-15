@@ -18,8 +18,8 @@
                 <button class="btn btn-success btn-sm">Editar</button>
             </a>
             <form action="/admin/postagens/deletar" method="post" class="form mt-2">
-                <input type="text" name="id" value="{{_id}}" disabled="true" hidden="true">
-                <button class="btn btn-danger btn-sm" type="submit">Deletar {{_id}}</button>
+                <input type="hidden" name="id" value="{{_id}}">
+                <button class="btn btn-danger btn-sm" type="submit">Deletar</button>
             </form>
         </div>
     </div>
