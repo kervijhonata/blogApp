@@ -1,0 +1,12 @@
+<h1>Lista de usuários</h1>
+<hr>
+{{#each usuarios}}
+    <div class="card">
+        <div class="card-body">
+            <h3>Nome: {{nome}}</h3>
+            <small>genero: {{genero}}</small>
+        </div>
+    </div>
+{{else}}
+    <p>Nenhum usuário registrado</p>
+{{/each}}

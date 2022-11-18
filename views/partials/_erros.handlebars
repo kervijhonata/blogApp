@@ -3,3 +3,10 @@
 {{else}}
 
 {{/each}}
+
+{{!-- Erros de autenticação de Usuário :: login(auth) --}}
+{{#if auth_error}}
+    <div class="alert alert-danger">{{this.auth_error}}</div>
+{{else}}
+
+{{/if}}

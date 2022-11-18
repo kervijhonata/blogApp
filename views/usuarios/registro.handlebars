@@ -1,0 +1,72 @@
+{{#each erros}}
+    <div class="alert alert-danger">{{texto}}</div>
+{{else}}
+
+{{/each}}
+<h1>Área de Cadastro de Usuário:</h1>
+<hr>
+<div class="card mb-4">
+    <div class="card-body">
+        <form action="/usuarios/registro/novo" method="post" class="form" autocomplete="off">
+            <label for="nome">Nome de Usuário:</label>
+            <input type="text" name="nome" class="form-control mb-2" minlength="2" maxlength="60" required  autocapitalize="sentences">
+
+            <label for="email">Email:</label>
+            <input type="email" name="email" class="form-control mb-2" minlength="5" maxlength="128" required>
+
+            <label for="nome">Senha:</label>
+            <input type="password" id="senha" name="senha" class="form-control mb-2"  minlength="8" maxlength="30" required>
+
+            <label for="nome">Repita sua senha:</label>
+            <small id="alerta" class="text-danger"> Deve ser idêntica a anterior</small>
+            <input type="password" id="senha_comparativa" name="senha_comparativa" class="form-control mb-2"  minlength="8" maxlength="30" required>
+            
+            <label for="data_nascimento">Data de Nascimento:</label>
+            <input type="date" name="data_nascimento" class="form-control mb-2" required>
+            <hr>
+
+            <label for="genero" class="mb-2">Gênero:</label>
+            <div class="form-check">
+                <input type="radio" name="genero" value="masculino" id="radio-genero-1" class="form-check-input">
+                <label for="radio-genero-1" class="form-check-label">Masculino</label>
+            </div>
+            <div class="form-check">
+                <input type="radio" name="genero" value="feminino" id="radio-genero-2" class="form-check-input">
+                <label for="radio-genero-2" class="form-check-label">Feminino</label>
+            </div>
+            <div class="form-check">
+                <input type="radio" name="genero" value="não binário" id="radio-genero-3" class="form-check-input" checked>
+                <label for="radio-genero-3" class="form-check-label">Não Binário</label>
+            </div>
+
+            <hr>
+            <button type="submit" class="btn btn-success">Cadastrar</button>
+        </form>
+    </div>
+</div>
+<script type="text/javascript">
+
+let $senha = document.querySelector("#senha")
+let $senha_comparativa = document.querySelector("#senha_comparativa")
+let $alerta = document.getElementById("alerta")
+
+$alerta.style.display = 'none'
+
+$senha_comparativa.addEventListener('keyup', compare)
+$senha_comparativa.addEventListener('keydown', compare)
+$senha_comparativa.addEventListener('click', compare)
+
+function compare(evt) {
+    let senha = $senha.value
+    let senha_comparativa = $senha_comparativa.value
+
+    if(senha_comparativa != senha){
+        $senha.classList.add('bg-warning')
+        $alerta.style.display = 'initial'
+    }else{
+        $senha.classList.remove('bg-warning')
+        $alerta.style.display = 'none'
+    }
+}
+
+</script>

@@ -236,14 +236,19 @@ router.post('/postagens/edit', (req, res) => {
 
 // Deletar postagem
 router.post("/postagens/deletar", (req, res) => {
-    Postagem.deleteOne({_id: req.body.id}).lean().then(()=>{
-        console.log(req.body.id)
-        req.flash("success_msg", "Postagem deletada com Sucesso")
-        res.redirect("/admin/postagens")
-    }).catch( err => {
-        req.flash("error_msg", "Nenhuma postagem relacionada foi encontrada para ser excluida.")
-        res.redirect("/admin/postagens")
-    })
+    Postagem.findOne({_id: req.body.id}).then((resultado)=>{
+
+        Postagem.deleteOne(resultado).then(()=>{
+            // console.log(req.body.id)
+            req.flash("success_msg", "Postagem deletada com Sucesso")
+            res.redirect("/admin/postagens")
+        }).catch( err => {
+            req.flash("error_msg", "Nenhuma postagem relacionada foi encontrada para ser excluida.")
+            res.redirect("/admin/postagens")
+        })
+
+    }).catch(err => console.log(err))
+
 })
 
 router.post('/postagens/nova', (req, res) => {
